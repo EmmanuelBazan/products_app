@@ -24,9 +24,13 @@ class _PurpleBox extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Container(
-      color: Colors.indigo,
       width: double.infinity,
       height: screenSize.height * 0.4,
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(colors: [
+        Color.fromRGBO(63, 63, 156, 1),
+        Color.fromRGBO(90, 70, 178, 1)
+      ])),
     );
   }
 }
