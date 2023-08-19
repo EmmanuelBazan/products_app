@@ -6,7 +6,6 @@ class LoginBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
       width: double.infinity,
       height: double.infinity,
       child: const Stack(children: [_PurpleBox()]),
