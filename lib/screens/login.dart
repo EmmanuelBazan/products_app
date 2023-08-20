@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/widgets/login/card_container.dart';
 import 'package:products_app/widgets/login/login_background.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -8,6 +9,15 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: LoginBackground());
+    return const Scaffold(
+        body: LoginBackground(
+            child: SingleChildScrollView(
+      child: Column(children: [
+        SizedBox(
+          height: 250,
+        ),
+        CardContainer(child: Text('Holamundo'))
+      ]),
+    )));
   }
 }

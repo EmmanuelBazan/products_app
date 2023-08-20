@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
 class LoginBackground extends StatelessWidget {
-  const LoginBackground({super.key});
+  final Widget child;
+
+  const LoginBackground({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      child: const Stack(children: [
-        _PurpleBox(),
-        _HeaderIcon(),
+      child: Stack(children: [
+        const _PurpleBox(),
+        const _HeaderIcon(),
+        child,
       ]),
     );
   }
