@@ -8,8 +8,31 @@ class LoginBackground extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      child: const Stack(children: [_PurpleBox()]),
+      child: const Stack(children: [
+        _PurpleBox(),
+        _HeaderIcon(),
+      ]),
     );
+  }
+}
+
+class _HeaderIcon extends StatelessWidget {
+  const _HeaderIcon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(top: 30),
+      child: const Icon(
+        Icons.person_pin,
+        color: Colors.white,
+        size: 100,
+      ),
+    ));
   }
 }
 
