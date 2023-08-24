@@ -47,47 +47,64 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const String pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
     return Container(
       child: Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
-        children: [
-          TextFormField(
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecorations.authInputDecoration(
-              hintText: 'john.doe@gmail.com',
-              labelText: 'Correo electronico',
-              prefixIcon: Icons.alternate_email_rounded,
-            ),
-          ),
-          const SizedBox(height: 30),
-          TextFormField(
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecorations.authInputDecoration(
-              hintText: '********',
-              labelText: 'Contraseña',
-              prefixIcon: Icons.lock_outline,
-            ),
-          ),
-          const SizedBox(height: 30),
-          MaterialButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            disabledColor: Colors.grey,
-            elevation: 0,
-            color: Colors.deepPurple,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-              child: const Text(
-                'Ingresar',
-                style: TextStyle(color: Colors.white),
+            children: [
+              TextFormField(
+                autocorrect: false,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecorations.authInputDecoration(
+                  hintText: 'john.doe@gmail.com',
+                  labelText: 'Correo electronico',
+                  prefixIcon: Icons.alternate_email_rounded,
+                ),
+                validator: (value) {
+                  RegExp regExp = RegExp(pattern);
+
+                  return regExp.hasMatch(value ?? '')
+                      ? null
+                      : 'Correo electronico invalido';
+                },
               ),
-            ),
-            onPressed: () {},
-          )
-        ],
-      )),
+              const SizedBox(height: 30),
+              TextFormField(
+                autocorrect: false,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecorations.authInputDecoration(
+                  hintText: '********',
+                  labelText: 'Contraseña',
+                  prefixIcon: Icons.lock_outline,
+                ),
+                validator: (value) {
+                  return (value != null && value.length >= 6)
+                      ? null
+                      : 'La contraseña debe contener minimo 6 caracteres';
+                },
+              ),
+              const SizedBox(height: 30),
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                disabledColor: Colors.grey,
+                elevation: 0,
+                color: Colors.deepPurple,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                  child: const Text(
+                    'Ingresar',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                onPressed: () {},
+              )
+            ],
+          )),
     );
   }
 }
