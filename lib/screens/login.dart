@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/providers/login_form_provider.dart';
+import 'package:products_app/screens/home.dart';
 import 'package:products_app/ui/input_decorations.dart';
 import 'package:products_app/widgets/login/card_container.dart';
 import 'package:products_app/widgets/login/login_background.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -27,7 +30,10 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            const _LoginForm(),
+            ChangeNotifierProvider(
+              create: (_) => LoginFormProvider(),
+              child: const _LoginForm(),
+            ),
             const SizedBox(
               height: 30,
             )
@@ -47,11 +53,14 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loginFormProvider = Provider.of<LoginFormProvider>(context);
+
     const String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
     return Container(
       child: Form(
+          key: loginFormProvider.formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
@@ -70,6 +79,7 @@ class _LoginForm extends StatelessWidget {
                       ? null
                       : 'Correo electronico invalido';
                 },
+                onChanged: (value) => loginFormProvider.email = value,
               ),
               const SizedBox(height: 30),
               TextFormField(
@@ -85,6 +95,7 @@ class _LoginForm extends StatelessWidget {
                       ? null
                       : 'La contraseña debe contener minimo 6 caracteres';
                 },
+                onChanged: (value) => loginFormProvider.password = value,
               ),
               const SizedBox(height: 30),
               MaterialButton(
@@ -101,7 +112,11 @@ class _LoginForm extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (!loginFormProvider.isValidForm()) return;
+
+                  Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+                },
               )
             ],
           )),
