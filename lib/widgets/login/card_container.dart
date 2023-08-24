@@ -9,8 +9,9 @@ class CardContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 100,
+      // height: 100,
       margin: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: _cardDecoration(),
       child: child,
     );
