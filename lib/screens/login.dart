@@ -58,77 +58,75 @@ class _LoginForm extends StatelessWidget {
     const String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-    return Container(
-      child: Form(
-          key: loginFormProvider.formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            children: [
-              TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                  hintText: 'john.doe@gmail.com',
-                  labelText: 'Correo electronico',
-                  prefixIcon: Icons.alternate_email_rounded,
-                ),
-                validator: (value) {
-                  RegExp regExp = RegExp(pattern);
+    return Form(
+        key: loginFormProvider.formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          children: [
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecorations.authInputDecoration(
+                hintText: 'john.doe@gmail.com',
+                labelText: 'Correo electronico',
+                prefixIcon: Icons.alternate_email_rounded,
+              ),
+              validator: (value) {
+                RegExp regExp = RegExp(pattern);
 
-                  return regExp.hasMatch(value ?? '')
-                      ? null
-                      : 'Correo electronico invalido';
-                },
-                onChanged: (value) => loginFormProvider.email = value,
-              ),
-              const SizedBox(height: 30),
-              TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecorations.authInputDecoration(
-                  hintText: '********',
-                  labelText: 'Contraseña',
-                  prefixIcon: Icons.lock_outline,
-                ),
-                validator: (value) {
-                  return (value != null && value.length >= 6)
-                      ? null
-                      : 'La contraseña debe contener minimo 6 caracteres';
-                },
-                onChanged: (value) => loginFormProvider.password = value,
-              ),
-              const SizedBox(height: 30),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                disabledColor: Colors.grey,
-                elevation: 0,
-                color: Colors.deepPurple,
-                onPressed: loginFormProvider.isLoading
+                return regExp.hasMatch(value ?? '')
                     ? null
-                    : () async {
-                        FocusScope.of(context).unfocus();
+                    : 'Correo electronico invalido';
+              },
+              onChanged: (value) => loginFormProvider.email = value,
+            ),
+            const SizedBox(height: 30),
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecorations.authInputDecoration(
+                hintText: '********',
+                labelText: 'Contraseña',
+                prefixIcon: Icons.lock_outline,
+              ),
+              validator: (value) {
+                return (value != null && value.length >= 6)
+                    ? null
+                    : 'La contraseña debe contener minimo 6 caracteres';
+              },
+              onChanged: (value) => loginFormProvider.password = value,
+            ),
+            const SizedBox(height: 30),
+            MaterialButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              disabledColor: Colors.grey,
+              elevation: 0,
+              color: Colors.deepPurple,
+              onPressed: loginFormProvider.isLoading
+                  ? null
+                  : () async {
+                      FocusScope.of(context).unfocus();
 
-                        if (!loginFormProvider.isValidForm()) return;
+                      if (!loginFormProvider.isValidForm()) return;
 
-                        loginFormProvider.isLoading = true;
+                      loginFormProvider.isLoading = true;
 
-                        await Future.delayed(Duration(seconds: 2));
+                      await Future.delayed(Duration(seconds: 2));
 
-                        Navigator.pushReplacementNamed(
-                            context, HomeScreen.routeName);
-                      },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                  child: Text(
-                    loginFormProvider.isLoading ? 'Cargando...' : 'Ingresar',
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                      Navigator.pushReplacementNamed(
+                          context, HomeScreen.routeName);
+                    },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                child: Text(
+                  loginFormProvider.isLoading ? 'Cargando...' : 'Ingresar',
+                  style: const TextStyle(color: Colors.white),
                 ),
-              )
-            ],
-          )),
-    );
+              ),
+            )
+          ],
+        ));
   }
 }
