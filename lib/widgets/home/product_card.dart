@@ -10,6 +10,10 @@ class ProductCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
       width: double.infinity,
       height: 400,
+      child: const Stack(alignment: Alignment.bottomLeft, children: [
+        _BackgroundImage(),
+        _ProductDetails(),
+      ]),
     );
   }
 
@@ -25,11 +29,37 @@ class ProductCard extends StatelessWidget {
           ]);
 }
 
+class _ProductDetails extends StatelessWidget {
+  const _ProductDetails({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 70,
+      color: Colors.indigo,
+    );
+  }
+}
+
 class _BackgroundImage extends StatelessWidget {
   const _BackgroundImage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(25),
+      child: const SizedBox(
+        width: double.infinity,
+        height: 400,
+        child: FadeInImage(
+          placeholder: AssetImage('assets/jar-loading.gif'),
+          image: NetworkImage('https://via.placeholder.com/400x300/f6f6f6'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
   }
 }
