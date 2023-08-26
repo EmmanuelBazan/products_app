@@ -12,10 +12,23 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Productos'),
       ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int index) => const ProductCard(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        child: GridView.builder(
+          itemCount: 50,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisExtent: 350,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 20,
+          ),
+          itemBuilder: (BuildContext context, int index) => const ProductCard(),
+        ),
       ),
+      // ListView.builder(
+      //   itemCount: 10,
+      //   itemBuilder: (BuildContext context, int index) => const ProductCard(),
+      // ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {},
