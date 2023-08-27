@@ -12,8 +12,30 @@ class EditProductScreen extends StatelessWidget {
     return Scaffold(
         body: Stack(
       children: [
-        _productImage(),
+        _productImage(context),
         _editForm(),
+        Padding(
+          padding: EdgeInsets.only(top: 60),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                color: Colors.white,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.camera_alt_outlined,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     ));
   }
@@ -87,7 +109,7 @@ class EditProductScreen extends StatelessWidget {
     );
   }
 
-  Stack _productImage() {
+  Stack _productImage(BuildContext context) {
     return Stack(
       children: [
         Container(
@@ -101,10 +123,8 @@ class EditProductScreen extends StatelessWidget {
           ),
         ),
         Container(
-          alignment: Alignment.topCenter,
           width: double.infinity,
           height: 350,
-          padding: const EdgeInsets.only(top: 30),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0, -0.5),
@@ -115,24 +135,7 @@ class EditProductScreen extends StatelessWidget {
               ],
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                color: Colors.white,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.camera_alt_outlined,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        )
+        ),
       ],
     );
   }
