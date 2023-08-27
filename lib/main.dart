@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:products_app/screens/edit_product_screes.dart';
 import 'package:products_app/screens/screens.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       initialRoute: HomeScreen.routeName,
       routes: {
         LoginScreen.routeName: (_) => const LoginScreen(),
-        HomeScreen.routeName: (_) => const HomeScreen()
+        HomeScreen.routeName: (_) => const HomeScreen(),
+        EditProductScreen.routeName: (_) => const EditProductScreen()
       },
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Colors.grey[300],
