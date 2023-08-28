@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/models/product.dart';
+import 'package:products_app/services/edit_product_form_provider.dart';
 import 'package:products_app/services/product_provider.dart';
 import 'package:products_app/styles/font_styles.dart';
 import 'package:products_app/ui/input_decorations.dart';
@@ -13,14 +15,30 @@ class EditProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
 
+    return ChangeNotifierProvider(
+      create: (_) => EditProductFormProvider(productProvider.selectedProduct),
+      child: EditProductBody(
+        product: productProvider.selectedProduct,
+      ),
+    );
+  }
+}
+
+class EditProductBody extends StatelessWidget {
+  final Product product;
+
+  const EditProductBody({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
       children: [
         _productImage(
           context,
-          productProvider.selectedProduct.picture,
+          product.picture,
         ),
-        _editForm(),
+        _editForm(context),
         Padding(
           padding: const EdgeInsets.only(top: 60),
           child: Row(
@@ -47,7 +65,12 @@ class EditProductScreen extends StatelessWidget {
     ));
   }
 
-  SingleChildScrollView _editForm() {
+  SingleChildScrollView _editForm(BuildContext context) {
+    final editFormProvider = Provider.of<EditProductFormProvider>(context);
+    Product currentProduct = editFormProvider.product;
+
+    // FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'));
+
     return SingleChildScrollView(
       child: Form(
           child: Container(
@@ -62,30 +85,51 @@ class EditProductScreen extends StatelessWidget {
             const SizedBox(height: 10),
             TextFormField(
               autocorrect: false,
+              initialValue: currentProduct.name,
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'Agrega un nombre a tu producto',
                 labelText: 'Nombre',
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty)
+                  return 'El nombre es obligatorio';
+              },
             ),
             const SizedBox(height: 10),
             TextFormField(
               autocorrect: false,
+              initialValue: currentProduct.description,
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'Agrega una descripcion a tu producto',
                 labelText: 'Descripcion',
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'La descripcion es obligatoria';
+                } else {
+                  return null;
+                }
+              },
             ),
             const SizedBox(height: 10),
             TextFormField(
               autocorrect: false,
+              initialValue: '\$${currentProduct.price}',
               decoration: InputDecorations.authInputDecoration(
                 hintText: 'Agrega un precio a tu producto',
                 labelText: 'Precio',
               ),
+              onChanged: (value) {
+                if (double.tryParse(value) == null) {
+                  currentProduct.price = 0;
+                } else {
+                  currentProduct.price = double.parse(value);
+                }
+              },
             ),
             const SizedBox(height: 10),
             SwitchListTile(
-              value: true,
+              value: currentProduct.available,
               onChanged: (bool value) {},
               title: const Text('Disponible'),
               contentPadding: const EdgeInsets.all(0),
