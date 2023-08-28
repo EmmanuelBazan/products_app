@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:products_app/screens/edit_product_screes.dart';
+import 'package:products_app/services/product_provider.dart';
 import 'package:products_app/widgets/home/product_card.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -9,6 +11,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Productos'),

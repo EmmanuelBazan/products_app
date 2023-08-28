@@ -6,7 +6,7 @@ import 'package:products_app/services/product_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const AppState());
 
 class AppState extends StatelessWidget {
   const AppState({super.key});
@@ -14,7 +14,11 @@ class AppState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => ProductProvider())],
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProductProvider(),
+        )
+      ],
       child: const MyApp(),
     );
   }
@@ -35,7 +39,7 @@ class MyApp extends StatelessWidget {
       }
     }
 
-    initUniLinks();
+    // initUniLinks();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -43,7 +47,7 @@ class MyApp extends StatelessWidget {
       initialRoute: HomeScreen.routeName,
       routes: {
         LoginScreen.routeName: (_) => const LoginScreen(),
-        HomeScreen.routeName: (_) => const HomeScreen(),
+        HomeScreen.routeName: (context) => const HomeScreen(),
         EditProductScreen.routeName: (_) => const EditProductScreen()
       },
       theme: ThemeData.light().copyWith(

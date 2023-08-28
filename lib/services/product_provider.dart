@@ -7,8 +7,7 @@ import 'package:http/http.dart' as http;
 class ProductProvider extends ChangeNotifier {
   bool isLoading = true;
   final List<Product> productsList = [];
-  final String _baseUrl =
-      'https://productos-app-8ad02-default-rtdb.firebaseio.com';
+  final String _baseUrl = 'productos-app-8ad02-default-rtdb.firebaseio.com';
 
   ProductProvider() {
     getProducts();
@@ -20,6 +19,12 @@ class ProductProvider extends ChangeNotifier {
 
     final Map<String, dynamic> productsMap = json.decode(res.body);
 
-    print(productsMap);
+    productsMap.forEach((key, value) {
+      final temp = Product.fromMap(value);
+      temp.id = key;
+      productsList.add(temp);
+    });
+
+    print('### ${productsList[0].toMap()}');
   }
 }

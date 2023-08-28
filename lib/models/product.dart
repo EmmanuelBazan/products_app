@@ -5,12 +5,14 @@ class Product {
   String name;
   String? picture;
   double price;
+  String? id;
 
   Product({
     required this.available,
     required this.name,
     required this.price,
     this.picture,
+    this.id,
   });
 
   factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
@@ -29,5 +31,6 @@ class Product {
         "name": name,
         "picture": picture,
         "price": price,
+        "id": id,
       };
 }
