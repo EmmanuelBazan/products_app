@@ -44,9 +44,16 @@ class ProductProvider extends ChangeNotifier {
     final res = await http.put(url, body: product.toJson());
     final decodedRes = res.body;
 
-    print(decodedRes);
+    updateProductList(product);
 
     isUpdating = false;
     notifyListeners();
+  }
+
+  updateProductList(Product product) {
+    final index =
+        productsList.indexWhere((element) => element.id == product.id);
+
+    productsList[index] = product;
   }
 }
