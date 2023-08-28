@@ -13,7 +13,10 @@ class ProductProvider extends ChangeNotifier {
     getProducts();
   }
 
-  Future getProducts() async {
+  Future<List<Product>> getProducts() async {
+    isLoading = true;
+    notifyListeners();
+
     final url = Uri.https(_baseUrl, '/products.json');
     final res = await http.get(url);
 
@@ -25,6 +28,9 @@ class ProductProvider extends ChangeNotifier {
       productsList.add(temp);
     });
 
-    print('### ${productsList[0].toMap()}');
+    isLoading = false;
+    notifyListeners();
+
+    return productsList;
   }
 }

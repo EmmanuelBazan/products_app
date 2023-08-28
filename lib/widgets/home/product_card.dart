@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/models/product.dart';
 import 'package:products_app/styles/font_styles.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
+  final Product product;
+
+  const ProductCard({
+    super.key,
+    required this.product,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,12 +16,15 @@ class ProductCard extends StatelessWidget {
         decoration: _cardDecoration(),
         width: double.infinity,
         height: 350,
-        child: const Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _BackgroundImage(),
+            _BackgroundImage(
+              available: product.available,
+              urlImage: product.picture,
+            ),
             Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 10,
               ),
@@ -24,24 +33,24 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Eu adipisicing nulla in officia tempor anim est sunt duis ullamco.',
+                    product.name,
                     maxLines: 2,
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.ellipsis,
                     style: FontStyles.bodyBld14B,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
-                    'Culpa nulla occaecat laboris eiusmod duis qui ea reprehenderit commodo commodo ullamco cupidatat quis aliqua. Qui officia tempor ea sit fugiat anim reprehenderit exercitation ullamco reprehenderit eu occaecat. Consequat sint consequat exercitation occaecat ullamco est proident excepteur. Duis tempor minim quis id ad eiusmod labore consequat amet esse. Enim enim incididunt minim officia do sint reprehenderit velit ut aute consequat et labore irure.',
+                    product.description,
                     maxLines: 2,
                     softWrap: true,
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.ellipsis,
                     style: FontStyles.bodyReg14B,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
-                    '147.99',
+                    '\$${product.price}',
                     textAlign: TextAlign.start,
                     style: FontStyles.bodyBld14Indg,
                   ),
@@ -80,7 +89,14 @@ class _ProductDetails extends StatelessWidget {
 }
 
 class _BackgroundImage extends StatelessWidget {
-  const _BackgroundImage({super.key});
+  final bool available;
+  final String? urlImage;
+
+  const _BackgroundImage({
+    super.key,
+    required this.available,
+    required this.urlImage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -88,17 +104,18 @@ class _BackgroundImage extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: const SizedBox(
+          child: SizedBox(
             width: double.infinity,
             height: 200,
             child: FadeInImage(
-              placeholder: AssetImage('assets/jar-loading.gif'),
-              image: NetworkImage('https://via.placeholder.com/400x300/f6f6f6'),
+              placeholder: const AssetImage('assets/jar-loading.gif'),
+              image: NetworkImage(
+                  urlImage ?? 'https://via.placeholder.com/400x300/3700b3'),
               fit: BoxFit.cover,
             ),
           ),
         ),
-        if (false)
+        if (available)
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(
