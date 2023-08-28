@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 class ProductProvider extends ChangeNotifier {
   bool isLoading = true;
+  late Product selectedProduct;
   final List<Product> productsList = [];
   final String _baseUrl = 'productos-app-8ad02-default-rtdb.firebaseio.com';
 

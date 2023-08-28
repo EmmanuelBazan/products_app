@@ -35,6 +35,8 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) =>
                       GestureDetector(
                         onTap: () {
+                          productProvider.selectedProduct =
+                              productProvider.productsList[index].copy();
                           Navigator.pushNamed(
                               context, EditProductScreen.routeName);
                         },

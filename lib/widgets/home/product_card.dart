@@ -95,7 +95,7 @@ class _BackgroundImage extends StatelessWidget {
   const _BackgroundImage({
     super.key,
     required this.available,
-    required this.urlImage,
+    this.urlImage,
   });
 
   @override

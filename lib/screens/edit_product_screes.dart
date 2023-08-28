@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/services/product_provider.dart';
 import 'package:products_app/styles/font_styles.dart';
 import 'package:products_app/ui/input_decorations.dart';
+import 'package:provider/provider.dart';
 
 class EditProductScreen extends StatelessWidget {
   const EditProductScreen({Key? key}) : super(key: key);
@@ -9,10 +11,15 @@ class EditProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+
     return Scaffold(
         body: Stack(
       children: [
-        _productImage(context),
+        _productImage(
+          context,
+          productProvider.selectedProduct.picture,
+        ),
         _editForm(),
         Padding(
           padding: const EdgeInsets.only(top: 60),
@@ -109,16 +116,17 @@ class EditProductScreen extends StatelessWidget {
     );
   }
 
-  Stack _productImage(BuildContext context) {
+  Stack _productImage(BuildContext context, String? urlImg) {
     return Stack(
       children: [
         Container(
           color: Colors.indigo,
           width: double.infinity,
           height: 350,
-          child: const FadeInImage(
-            placeholder: AssetImage('assets/jar-loading.gif'),
-            image: NetworkImage('https://via.placeholder.com/400x300/3700b3'),
+          child: FadeInImage(
+            placeholder: const AssetImage('assets/jar-loading.gif'),
+            image: NetworkImage(
+                urlImg ?? 'https://via.placeholder.com/400x300/3700b3'),
             fit: BoxFit.cover,
           ),
         ),
