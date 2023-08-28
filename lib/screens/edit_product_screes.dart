@@ -15,7 +15,7 @@ class EditProductScreen extends StatelessWidget {
         _productImage(context),
         _editForm(),
         Padding(
-          padding: EdgeInsets.only(top: 60),
+          padding: const EdgeInsets.only(top: 60),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
