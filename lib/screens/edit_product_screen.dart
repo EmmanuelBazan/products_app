@@ -156,7 +156,7 @@ class EditProductBody extends StatelessWidget {
                   onPressed: () async {
                     if (!editFormProvider.isValidForm()) return;
 
-                    await productProvider.updateProduct(product);
+                    await productProvider.saveOrCreateProduct(product);
                     Navigator.pop(context);
                   },
                   elevation: 0,

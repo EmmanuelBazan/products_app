@@ -15,6 +15,20 @@ class ProductProvider extends ChangeNotifier {
     getProducts();
   }
 
+  Future saveOrCreateProduct(Product product) async {
+    isUpdating = true;
+    notifyListeners();
+
+    if (product.id == null) {
+      await _createProduct(product);
+    } else {
+      await _updateProduct(product);
+    }
+
+    isUpdating = false;
+    notifyListeners();
+  }
+
   Future<List<Product>> getProducts() async {
     isLoading = true;
     notifyListeners();
@@ -36,21 +50,25 @@ class ProductProvider extends ChangeNotifier {
     return productsList;
   }
 
-  Future updateProduct(Product product) async {
-    isUpdating = true;
-    notifyListeners();
-
+  Future _updateProduct(Product product) async {
     final url = Uri.https(_baseUrl, 'products/${product.id}.json');
-    final res = await http.put(url, body: product.toJson());
-    final decodedRes = res.body;
+    await http.post(url, body: product.toJson());
+    // final decodedRes = jsonDecode(res.body);
 
-    updateProductList(product);
-
-    isUpdating = false;
-    notifyListeners();
+    _updateProductList(product);
   }
 
-  updateProductList(Product product) {
+  Future _createProduct(Product product) async {
+    final url = Uri.https(_baseUrl, 'products.json');
+    final res = await http.post(url, body: product.toJson());
+    final decodedRes = jsonDecode(res.body);
+
+    product.id = decodedRes['name'];
+
+    productsList.add(product);
+  }
+
+  _updateProductList(Product product) {
     final index =
         productsList.indexWhere((element) => element.id == product.id);
 
