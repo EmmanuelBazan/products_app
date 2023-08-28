@@ -115,7 +115,7 @@ class _BackgroundImage extends StatelessWidget {
             ),
           ),
         ),
-        if (available)
+        if (!available)
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(

@@ -8,6 +8,12 @@ class EditProductFormProvider extends ChangeNotifier {
   EditProductFormProvider(this.product);
 
   bool isValidForm() {
+    print('### ${product.toMap()}');
     return formKey.currentState?.validate() ?? false;
+  }
+
+  updateAvailability(bool value) {
+    product.available = value;
+    notifyListeners();
   }
 }

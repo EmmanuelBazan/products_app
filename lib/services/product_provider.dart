@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 class ProductProvider extends ChangeNotifier {
   bool isLoading = true;
+  bool isUpdating = false;
   late Product selectedProduct;
   final List<Product> productsList = [];
   final String _baseUrl = 'productos-app-8ad02-default-rtdb.firebaseio.com';
@@ -33,5 +34,19 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
 
     return productsList;
+  }
+
+  Future updateProduct(Product product) async {
+    isUpdating = true;
+    notifyListeners();
+
+    final url = Uri.https(_baseUrl, 'products/${product.id}.json');
+    final res = await http.put(url, body: product.toJson());
+    final decodedRes = res.body;
+
+    print(decodedRes);
+
+    isUpdating = false;
+    notifyListeners();
   }
 }
