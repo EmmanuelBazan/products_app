@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:products_app/models/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -83,5 +82,34 @@ class ProductProvider extends ChangeNotifier {
     newPictureFile = File.fromUri(Uri(path: path));
 
     notifyListeners();
+  }
+
+  Future<String?> uploadImage() async {
+    if (newPictureFile == null) return null;
+
+    isUpdating = true;
+    notifyListeners();
+
+    final url = Uri.parse(
+        'https://api.cloudinary.com/v1_1/dzlpbanqa/image/upload?upload_preset=imuv7oed');
+
+    final req = http.MultipartRequest('POST', url);
+
+    final file =
+        await http.MultipartFile.fromPath('file', newPictureFile!.path);
+
+    req.files.add(file);
+
+    final streamRes = await req.send();
+    final res = await http.Response.fromStream(streamRes);
+
+    if (res.statusCode != 200 && res.statusCode != 201) {
+      return null;
+    }
+
+    newPictureFile = null;
+
+    final decoded = jsonDecode(res.body);
+    return decoded['secure_url'];
   }
 }

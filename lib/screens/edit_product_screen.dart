@@ -168,6 +168,13 @@ class EditProductBody extends StatelessWidget {
                   onPressed: () async {
                     if (!editFormProvider.isValidForm()) return;
 
+                    final String? imageUrl =
+                        await productProvider.uploadImage();
+
+                    if (imageUrl != null) {
+                      currentProduct.picture = imageUrl;
+                    }
+
                     await productProvider.saveOrCreateProduct(currentProduct);
                     Navigator.pop(context);
                   },
