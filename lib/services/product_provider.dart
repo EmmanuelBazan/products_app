@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:products_app/models/product.dart';
 import 'package:http/http.dart' as http;
 
 class ProductProvider extends ChangeNotifier {
+  File? newPictureFile;
   bool isLoading = true;
   bool isUpdating = false;
   late Product selectedProduct;
@@ -73,5 +76,12 @@ class ProductProvider extends ChangeNotifier {
         productsList.indexWhere((element) => element.id == product.id);
 
     productsList[index] = product;
+  }
+
+  updateSelectedProductImage(String path) {
+    selectedProduct.picture = path;
+    newPictureFile = File.fromUri(Uri(path: path));
+
+    notifyListeners();
   }
 }

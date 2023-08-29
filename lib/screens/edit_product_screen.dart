@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:products_app/models/product.dart';
 import 'package:products_app/services/edit_product_form_provider.dart';
 import 'package:products_app/services/product_provider.dart';
@@ -18,20 +21,19 @@ class EditProductScreen extends StatelessWidget {
 
     return ChangeNotifierProvider(
       create: (_) => EditProductFormProvider(productProvider.selectedProduct),
-      child: EditProductBody(
-        product: productProvider.selectedProduct,
-      ),
+      child: EditProductBody(),
     );
   }
 }
 
 class EditProductBody extends StatelessWidget {
-  final Product product;
-
-  const EditProductBody({super.key, required this.product});
+  const EditProductBody({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+    final Product product = productProvider.selectedProduct;
+
     return Scaffold(
         body: Stack(
       children: [
@@ -53,7 +55,17 @@ class EditProductBody extends StatelessWidget {
                 color: Colors.white,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final picker = ImagePicker();
+                  final XFile? pickedFile = await picker.pickImage(
+                    source: ImageSource.camera,
+                    imageQuality: 100,
+                  );
+
+                  if (pickedFile == null) return;
+
+                  productProvider.updateSelectedProductImage(pickedFile.path);
+                },
                 icon: const Icon(
                   Icons.camera_alt_outlined,
                   color: Colors.white,
@@ -156,7 +168,7 @@ class EditProductBody extends StatelessWidget {
                   onPressed: () async {
                     if (!editFormProvider.isValidForm()) return;
 
-                    await productProvider.saveOrCreateProduct(product);
+                    await productProvider.saveOrCreateProduct(currentProduct);
                     Navigator.pop(context);
                   },
                   elevation: 0,
@@ -189,12 +201,17 @@ class EditProductBody extends StatelessWidget {
           color: Colors.indigo,
           width: double.infinity,
           height: 350,
-          child: FadeInImage(
-            placeholder: const AssetImage('assets/jar-loading.gif'),
-            image: NetworkImage(
-                urlImg ?? 'https://via.placeholder.com/400x300/3700b3'),
-            fit: BoxFit.cover,
-          ),
+          child: (urlImg == null || urlImg.startsWith('http'))
+              ? FadeInImage(
+                  placeholder: const AssetImage('assets/jar-loading.gif'),
+                  image: NetworkImage(
+                      urlImg ?? 'https://via.placeholder.com/400x300/3700b3'),
+                  fit: BoxFit.cover,
+                )
+              : Image.file(
+                  File(urlImg),
+                  fit: BoxFit.cover,
+                ),
         ),
         Container(
           width: double.infinity,
